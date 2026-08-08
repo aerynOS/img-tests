@@ -27,6 +27,7 @@ pkgset-aeryn-virtual
 # Shared graphical disk-handling utilities
 binary(gparted)
 parted
+cryptsetup
 
 # Troubleshooting utilities useful in live env
 dmidecode
