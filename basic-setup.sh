@@ -101,7 +101,7 @@ basicSetup () {
 
     MSG="Adding volatile AerynOS repository..."
     printInfo "${MSG}"
-    sudo ${moss} -D "${AOSROOT}" -y repo add volatile https://build.aerynos.dev/stream/volatile/x86_64/stone.index -p0 || die "${MSG}"
+    sudo ${moss} -D "${AOSROOT}" -y repo add volatile https://build.aerynos.dev --root-index version=stream/volatile -p0 || die "${MSG}"
 
     MSG="Installing packages..."
     printInfo "${MSG}"
