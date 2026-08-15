@@ -2,3 +2,4 @@ kmod
 linux-stable
 lvm2
 networkmanager
+spice-vdagent
