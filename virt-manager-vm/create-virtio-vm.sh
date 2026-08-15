@@ -57,7 +57,7 @@ fi
 
 # Pkg list check
 checkPrereqs
-test -f ./pkglist || die "\nThis script MUST be run from within the virt-manager-vm/ dir with the ./pkglist file.\n"
+test -f ./pkglist-base || die "\nThis script MUST be run from within the virt-manager-vm/ dir with the ./pkglist-base file.\n"
 command -v virsh || die "\n${0} assumes that virsh is installed.\n"
 command -v virt-manager || die "\n${0} assumes that virt-manager is installed.\n"
 
