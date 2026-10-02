@@ -2,8 +2,7 @@
 
 🚨🚧🚧🚧🚨
 
-As AerynOS is under heavy development, the image generation scripts in this repository are provided as is,
-with no explicit or implied warranty or support.
+As aerynOS is under heavy development, the image generation scripts in this repository are provided as is, with no explicit or implied warranty or support.
 
 If you break your computer because you used these scripts or AerynOS in its current state, you get to keep both pieces.
 
@@ -38,4 +37,3 @@ https://github.com/Jacksaur/CRT-Amber-GRUB-Theme
 Which is itself inspired by:
 Fallout 4 terminal-style artwork
 https://www.nexusmods.com/fallout4/images/170842
-
