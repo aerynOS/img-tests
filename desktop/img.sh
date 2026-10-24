@@ -57,7 +57,7 @@ function usage() {
 ASK="yes"
 PACKAGE_LIST="gnome_pkglist"
 OUTPUT="aerynos"
-TMPDIR="."
+TMPDIR="/tmp"
 
 while getopts 'c:o:p:t:hy?' opt
 do
@@ -259,17 +259,17 @@ build() {
 
     export RUST_BACKTRACE=1
 
-    export MOSS="moss -D ${AFSDIR} --cache ${CACHE}"
+    export MOSS="moss -D ${AFSDIR} --cache-dir ${CACHE}"
 
     echo ">>> Add volatile AerynOS repository to ${AFSDIR}/ ..."
-    time ${MOSS} repo add volatile https://cdn.aerynos.dev --root-index channel=main,version=stream/volatile || die_and_cleanup "Adding moss repo failed!"
+    time ${MOSS} repo add volatile https://cdn.aerynos.dev --root-index channel=main,version=stream/volatile --comment "..."|| die_and_cleanup "Adding moss repo failed!"
 
     #echo ">>> Add local repo to ${AFSDIR}/ ..."
     #time ${MOSS} repo add local file:///home/ermo/.cache/local_repo/x86_64/stone.index -p10 || die_and_cleanup "Adding moss repo failed!"
 
     echo ">>> Install packages to ${AFSDIR}/ ..."
     du -csx -BM ${TMPFS}
-    time ${MOSS} install -y "${PACKAGES[@]}" || die_and_cleanup "Installing packages failed!"
+    time ${MOSS} pkg add -y "${PACKAGES[@]}" || die_and_cleanup "Installing packages failed!"
     du -csx -BM ${TMPFS}
 
     echo ">>> Set up basic environment in ${AFSDIR}/ ..."
@@ -297,7 +297,7 @@ build() {
 
     echo ">>> Install dracut in ${AFSDIR}/ ..."
     du -csx -BM ${TMPFS}
-    time ${MOSS} install "${initrd[@]}" -y || die_and_cleanup "Failed to install initrd packages!"
+    time ${MOSS} pkg add "${initrd[@]}" -y || die_and_cleanup "Failed to install initrd packages!"
 
     echo ">>> Regenerate dracut..."
     kver=$(ls "${AFSDIR}/usr/lib/modules")
@@ -309,11 +309,11 @@ build() {
     mv -v "${AFSDIR}/initrd" "${BOOT}/initrd"
 
     echo ">>> Generate name-version-release file for use by e.g. distrowatch..."
-    time ${MOSS} li |gawk '{print $1 " " $2}' |sort -h > "${OUTPUT}.iso.nvr"
+    time ${MOSS} pkg list --installed |gawk '{print $1 " " $2}' |sort -h > "${OUTPUT}.iso.nvr"
 
     echo ">>> Roll back and prune to keep only initially installed state and remove downloads ..."
     time ${MOSS} state activate 1 -y || die_and_cleanup "Failed to activate initial state in ${TMPFS}/ !"
-    time ${MOSS} state prune -k 1 --include-newer -y || die_and_cleanup "Failed to prune moss state in ${TMPFS}/ !"
+    time ${MOSS} state remove 2 -y || die_and_cleanup "Failed to prune moss state in ${TMPFS}/ !"
 
     # Remove downloaded .stones to lower size of generated ISO
     rm -rf "${AFSDIR}"/.moss/cache/downloads/*
@@ -335,7 +335,7 @@ build() {
     EFI_SIZE=$(du -c "${BOOT}/bootx64.efi" "${BOOT}/kernel" "${BOOT}/initrd" "${WORK}/live-os.conf" | grep total | awk '{print $1}')
     EFI_SIZE=$((EFI_SIZE + 1024)) # Add some buffer space
     fallocate -l ${EFI_SIZE}K "${TMPFS}/efi.img"
-    mkfs.vfat -F 12 "${TMPFS}/efi.img" -n EFIBOOTISO
+    mkfs.vfat -F 16 "${TMPFS}/efi.img" -n EFIBOOTISO
     mount -vo loop "${TMPFS}/efi.img" "${MOUNT}"
 
     echo ">>> Set up EFI image..."
