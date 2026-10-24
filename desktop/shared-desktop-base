@@ -37,7 +37,7 @@ usbutils
 firefox
 
 # Installer
-lichen
+lichen-installer
 
 # base desktop
 pkgset-aeryn-base-desktop

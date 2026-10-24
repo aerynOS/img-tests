@@ -1,7 +1,7 @@
 # Live session /etc/bashrc
 
-echo -e "\nWelcome to \e[35mAerynOS\e[0m!"
+echo -e "\nWelcome to \e[35maerynOS\e[0m!"
 echo -e "\n"
-echo -e "To install, run 'sudo lichen'. Note, you need to partition your disk first"
+echo -e "To install, run 'lichen'. Needs an entire disk. Dual boot not yet supported."
 
 # End live session /etc/bashrc
