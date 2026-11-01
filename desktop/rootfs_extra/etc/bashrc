@@ -2,7 +2,7 @@
 
 echo -e "\nWelcome to \e[35maerynOS\e[0m!"
 echo -e "\n"
-echo -e "To install, run 'sudo lichen'. Needs an entire disk (dual boot not yet supported)."
+echo -e "To install, run 'sudo lichen'. Needs an entire disk. Dual boot not yet supported."
 echo -e "To try the new installer, run 'lichen-tui'. Same constraints as above apply."
 
 # End live session /etc/bashrc
