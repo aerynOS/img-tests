@@ -55,7 +55,7 @@ release-gnome:
     #!/usr/bin/env bash
     set -euxo pipefail
     _yyyymm="$(date +%Y.%m)"
-    _output="AerynOS-${_yyyymm}-GNOME-live-x86_64"
+    _output="aerynOS-${_yyyymm}-GNOME-live-x86_64"
     just flavor="gnome" compression="zstd19" output="${_output}" build
 
 # Test newly built release ISO for the GNOME flavour
@@ -63,7 +63,7 @@ test-gnome-release:
     #!/usr/bin/env bash
     set -euxo pipefail
     _yyyymm="$(date +%Y.%m)"
-    _output="AerynOS-${_yyyymm}-GNOME-live-x86_64"
+    _output="aerynOS-${_yyyymm}-GNOME-live-x86_64"
     just flavor="gnome" compression="zstd19" output="${_output}" boot
 
 [confirm('This will delete ALL found .iso images -- continue?')]

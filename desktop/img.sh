@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: © 2020 aerynOS Developers
 # SPDX-License-Identifier: MPL-2.0
 #
-# AerynOS prototype linux-desktop ISO image generator
+# aerynOS prototype linux-desktop ISO image generator
 #
 
 set -uo pipefail
@@ -261,7 +261,7 @@ build() {
 
     export MOSS="moss -D ${AFSDIR} --cache-dir ${CACHE}"
 
-    echo ">>> Add volatile AerynOS repository to ${AFSDIR}/ ..."
+    echo ">>> Add volatile aerynOS repository to ${AFSDIR}/ ..."
     time ${MOSS} repo add volatile https://cdn.aerynos.dev --root-index channel=main,version=stream/volatile --comment "..."|| die_and_cleanup "Adding moss repo failed!"
 
     #echo ">>> Add local repo to ${AFSDIR}/ ..."
@@ -391,7 +391,7 @@ build() {
 ask_to_continue () {
     # Show a status page up front before generating the iso to avoid surprises
 
-    echo -e "\nGenerating AerynOS linux-desktop ISO image using:\n"
+    echo -e "\nGenerating aerynOS linux-desktop ISO image using:\n"
     echo -e "- compression : ${COMPRESSOR}"
     echo -e "- package list: ${PACKAGE_LIST}"
     echo -e "- output name : ${OUTPUT}.iso"
