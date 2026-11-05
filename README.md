@@ -4,7 +4,7 @@
 
 As aerynOS is under heavy development, the image generation scripts in this repository are provided as is, with no explicit or implied warranty or support.
 
-If you break your computer because you used these scripts or AerynOS in its current state, you get to keep both pieces.
+If you break your computer because you used these scripts or aerynOS in its current state, you get to keep both pieces.
 
 ## Build an ISO (can be used as an installer)
 
