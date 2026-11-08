@@ -300,12 +300,37 @@ build() {
     time ${MOSS} pkg add "${initrd[@]}" -y || die_and_cleanup "Failed to install initrd packages!"
 
     echo ">>> Regenerate dracut..."
-    kver=$(ls "${AFSDIR}/usr/lib/modules")
+
+    # NB: Remember to keep this up to date with the dracut invocation in linux-stable!
+    # 
+    # 2025-07-29: Add vfio kernel modules to initrd as they need to be loaded very early in the boot process
+    # 2026-09-16: Only include simpledrm for plymouth, exclude all other DRM drivers. Exclude early microcode in favor of generating initrds in linux-firmware/intel-microcode
+    # 2026-09-17: simpledrm is now a kernel built-in and doesn't need to be added
+    kernelVersion=$(ls "${AFSDIR}/usr/lib/modules")
+    drm_modules=""
+    omit_modules="amdgpu hyperv_drm i915 nouveau qxl radeon vboxvideo virtio-gpu vmwgfx xe"
+    vfio_modules="vfio_pci vfio_iommu_type1"
     time ${CHROOT} -D "${AFSDIR}/" \
-        dracut --early-microcode --hardlink -N --nomdadmconf --nolvmconf \
-            --kver ${kver} --add "bash dash systemd lvm dm dmsquash-live plymouth" \
-            --fwdir /usr/lib/firmware --tmpdir /tmp --zstd --strip /initrd -v \
-            --add-drivers "amdgpu hyperv_drm i915 nouveau qxl radeon simpledrm vboxvideo virtio-gpu vmwgfx xe"
+    dracut \
+        --add "bash rescue systemd plymouth virtiofs lvm dm dmsquash-live moss zz-init-extension" \
+        --add-drivers "${drm_modules} ${vfio_modules}" \
+        --omit-drivers "${omit_modules}" \
+        --force \
+        --fwdir /usr/lib/firmware \
+        --hardlink \
+        --kver ${kernelVersion} \
+        --no-early-microcode \
+        --no-firmware \
+        --no-hostonly \
+        --nolvmconf \
+        --nomdadmconf \
+        --strip \
+        --reproducible \
+        --tmpdir /tmp \
+        --verbose \
+        --zstd \
+        /initrd
+   
     mv -v "${AFSDIR}/initrd" "${BOOT}/initrd"
 
     echo ">>> Generate name-version-release file for use by e.g. distrowatch..."
