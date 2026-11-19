@@ -155,8 +155,17 @@
       <graphics type="spice">
         <listen type="none"/>
         <image compression="off"/>
+        <!-- ###OPENGL_SPICE_START### -->
         <gl enable="yes"/>
+        <!-- ###OPENGL_SPICE_END### -->
       </graphics>
+      <!-- ###EGL_HEADLESS_START### -->
+      <!-- NVIDIA hosts require egl-headless with the NVIDIA render node for 3D
+           acceleration; enabling OpenGL on the SPICE server does not work. -->
+      <graphics type="egl-headless">
+        <gl rendernode="###EGL_RENDERNODE###"/>
+      </graphics>
+      <!-- ###EGL_HEADLESS_END### -->
       <sound model="ich9">
         <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
       </sound>
